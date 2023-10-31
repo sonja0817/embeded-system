@@ -1,5 +1,5 @@
 #include <stdio.h>
 
-void printMyName1(void);
-void printMyName2(void);
-void printMyName3(void);
+int printMyName1(void);
+int printMyName2(void);
+int printMyName3(void);
