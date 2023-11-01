@@ -6,5 +6,4 @@ int main()
     printMyName1();
     printMyName2();
     printMyName3();
-    return 0;
 }
