@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "dbmasteruser",
+    "password": "qwer1234",
+    "database": "bobtudy",
+    "host": "ls-20dd32ba4182044908430dcb21a1d1e9cb5ad1fd.cwlx2mnqzmic.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "dbmasteruser",
+    "password": "qwer1234",
+    "database": "bobtudy",
+    "host": "ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "dbmasteruser",
+    "password": "qwer1234",
+    "database": "bobtudy",
+    "host": "ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  }
+}
