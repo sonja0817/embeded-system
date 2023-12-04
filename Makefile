@@ -4,8 +4,8 @@ libMyPeri.a:led.o buzzer.o
 
 led.o: led.h led.c
 	arm-linux-gnueabi-gcc -c led.c -o led.o
-buzzertest:buzzer.h buzzer.c buzzertest.c
-	arm-linux-gnueabi-gcc -o buzzertest buzzertest.c buzzer.c -Wall
+buzzertest: buzzertest.c
+	arm-linux-gnueabi-gcc -o buzzertest buzzertest.c -lMyPeri -L.
 
 buzzer.o: buzzer.h buzzer.c
 	arm-linux-gnueabi-gcc -c buzzer.c -o buzzer.o
