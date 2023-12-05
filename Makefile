@@ -1,9 +1,22 @@
 all:libMyPeri.a
-libMyPeri.a:led.o buzzer.o
-	arm-linux-gnueabi-ar rc libMyPeri.a led.o buzzer.o
+libMyPeri.a:led.o buzzer.o button.o fnd.o 
+	arm-linux-gnueabi-ar rc libMyPeri.a led.o buzzer.o button.o fnd.o
+
+fnd.o: fnd.h fnd.c
+	arm-linux-gnueabi-gcc -c fnd.c -o fnd.o
 
 led.o: led.h led.c
 	arm-linux-gnueabi-gcc -c led.c -o led.o
+
+button.o: button.h button.c
+	arm-linux-gnueabi-gcc -c button.c -o button.o -pthread
+
+buttontest: buttontest.c
+	arm-linux-gnueabi-gcc -pthread -o buttontest buttontest.c -lMyPeri -L.
+
+fndtest: fndtest.c
+	arm-linux-gnueabi-gcc -o fndtest fndtest.c -lMyPeri -L.
+
 buzzertest: buzzertest.c
 	arm-linux-gnueabi-gcc -o buzzertest buzzertest.c -lMyPeri -L.
 

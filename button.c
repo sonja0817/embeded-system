@@ -53,7 +53,7 @@ int buttonInit(void)
 	fd =open(buttonPath,O_RDONLY);
 	msgID=msgget(MESSAGE_ID,IPC_CREAT|0666);
 	pthread_create(&buttonTh_id,NULL,&buttonThFunc,NULL);
-	pthread_join(buttonTh_id,NULL);
+	//pthread_join(buttonTh_id,NULL);
 	return 1;
 }
 
@@ -61,7 +61,8 @@ void* buttonThFunc(void *arg){
 	int readSize,inputIndex;
 	struct input_event stEvent;
 	printf("thread on\n");
-	while(1){
+    while(1){	
+    while(1){
 		readSize = read(fd,&stEvent,sizeof(stEvent));
 		if(readSize != sizeof(stEvent)){
 			continue;
@@ -88,11 +89,13 @@ void* buttonThFunc(void *arg){
 		}
 		else;
 	}
+    }
 	close(fd);
+   
 }
 
 int buttonExit(void){
 	pthread_exit(buttonTh_id);
-	pthread_join(buttonTh_id,NULL);
+	//pthread_join(buttonTh_id,NULL);
 	printf("exit\n");
 }
