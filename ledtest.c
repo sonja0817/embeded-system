@@ -8,6 +8,7 @@ int main(void){
 	ledLibInit();
 	for(int i=0;i<8;i++){
 		ledOnOff(i,1);
+		printf("%d on\r\n",i);
 		sleep(1);
 	}
 
