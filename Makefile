@@ -7,7 +7,10 @@ fnd.o: fnd.h fnd.c
 
 led.o: led.h led.c
 	arm-linux-gnueabi-gcc -c led.c -o led.o
-
+	
+ledtest: ledtest.c
+	arm-linux-gnueabi-gcc -o ledtest ledtest.c -lMyPeri -L.
+	
 button.o: button.h button.c
 	arm-linux-gnueabi-gcc -c button.c -o button.o -pthread
 
