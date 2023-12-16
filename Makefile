@@ -1,7 +1,15 @@
 all:libMyPeri.a
-libMyPeri.a:led.o buzzer.o button.o fnd.o lcdtext.o
-	arm-linux-gnueabi-ar rc libMyPeri.a led.o buzzer.o button.o fnd.o lcdtext.o
+libMyPeri.a:led.o buzzer.o button.o fnd.o lcdtext.o temperature.o accelMagGyro.o
+	arm-linux-gnueabi-ar rc libMyPeri.a led.o buzzer.o button.o fnd.o lcdtext.o temperature.o accelMagGyro.o
 
+accelMagGyro.o: accelMagGyro.h accelMagGyro.c
+	arm-linux-gnueabi-gcc -c accelMagGyro.c -o accelMagGyro.o
+accelMagGyroTest: accelMagGyroTest.c
+	arm-linux-gnueabi-gcc -o accelMagGyroTest accelMagGyroTest.c -lMyPeri -L.
+temperature.o: temperature.h temperature.c
+	arm-linux-gnueabi-gcc -c temperature.c -o temperature.o
+temperatureTest: temperatureTest.c
+	arm-linux-gnueabi-gcc -o temperatureTest temperatureTest.c -lMyPeri -L.
 lcdtext.o: lcdtext.h lcdtext.c
 	arm-linux-gnueabi-gcc -c lcdtext.c -o lcdtext.o
 textlcdtest: textlcdtest.c
