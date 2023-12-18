@@ -2,5 +2,6 @@
 #define _LCDTEXT_H_
 
 int lcdtextwrite(const char *str,int lineFlag);
+int lcdtextClear(void);
 
 #endif

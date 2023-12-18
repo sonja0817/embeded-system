@@ -27,6 +27,24 @@ typedef struct TextLCD_tag
 	char TextData[LINE_NUM][LINE_BUFF_NUM];
 }stTextLCD,*pStTextLCD;
 
+int lcdtextClear(void){
+	stTextLCD stlcd;
+	int fd;
+	memset(&stlcd,0,sizeof(stTextLCD));
+	stlcd.cmdData = CMD_DATA_WRITE_LINE_1;
+	stlcd.cmd = CMD_WRITE_STRING;
+	fd=open(TEXTLCD_DRIVER_NAME,O_RDWR);
+	if(fd<0){
+		perror("driver open error\n");
+		return 1;
+	}
+	write(fd,&stlcd,sizeof(stTextLCD));
+	stlcd.cmdData = CMD_DATA_WRITE_LINE_2;
+	stlcd.cmd = CMD_WRITE_STRING;
+	write(fd,&stlcd,sizeof(stTextLCD));
+	close(fd);
+	return 0;
+}
 
 int lcdtextwrite(const char *str, int lineFlag){
 	stTextLCD stlcd;
@@ -57,3 +75,5 @@ int lcdtextwrite(const char *str, int lineFlag){
 	close(fd);
 	return 0;
 }
+
+
