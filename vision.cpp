@@ -56,41 +56,82 @@ int main(int argc, char* argv[])
 #ifdef TEST
 int main(int argc, char* argv[])
 {
-
     Mat frame;
-    Mat k;
+    Mat kernel;
     Mat Mog2;
     Ptr<BackgroundSubtractor> pMog2;
     pMog2 = createBackgroundSubtractorMOG2();
    
 
-    VideoCapture cap("square.mp4");
+    //VideoCapture cap("square.mp4");
+    VideoCapture cap(0);
+ 
     Mat a, b, c;
     vector<vector<Point>> contours;
 
+    cap >> a;
 
-    
-    Point2f center;
-    float radius = 0;
-  
- 
+    int hist = 0;
+    int total_fix = a.rows * a.cols;
 
     while (1)
     {
         cap >> a;
-        //pMog2->apply(a, frame);
-        //k = getStructuringElement(MORPH_RECT, Size(3, 3));
-        //morphologyEx(frame, frame, MORPH_ERODE, k);
 
-        cvtColor(a, b, COLOR_BGR2GRAY);
-        threshold(b, c, 200, 255, THRESH_BINARY);
-        //bitwise_and(frame, c, frame);
+        pMog2->apply(a, frame);     //MOG2
+        kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+        morphologyEx(frame, frame, MORPH_ERODE, kernel);
+
+
+        cvtColor(a, b, COLOR_BGR2GRAY);         //threshold
+        threshold(b, c, 150, 255, THRESH_BINARY);
+        
+
+        bitwise_and(c, frame, c);
+
+   
         imshow("ther", c);
-        findContours(c, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
-        drawContours(a, contours, -1, Scalar(0, 0, 255), -1);
+        findContours(c, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
+        //drawContours(a, contours, -1, Scalar(0, 0, 255), 1);
+
+        for (int i = 0; i < contours.size(); i++)
+        {
+            Rect rect = boundingRect(contours[i]);
+            rectangle(a, rect, Scalar(0, 0, 255), -1);
+        }
 
 
+        for (int y = 0; y < a.rows; y++)
+        {
+            for (int x = 0; x < a.cols; x++)
+            {
+                if (a.at<Vec3b>(y, x)[2] == 255)
+                {
+                    hist++;
+                }
+            }
+        }
+        
         imshow("test", a);
+
+        if (hist >= total_fix * 0.3 && hist < total_fix * 0.4)
+        {
+            cout << "notice" << endl;
+        }
+        else if (hist >= total_fix * 0.4 && hist < total_fix * 0.5)
+        {
+            cout << "caution" << endl;
+        }
+        else if (hist >= total_fix * 0.6 && hist < total_fix * 0.7)
+        {
+            cout << "warning" << endl;
+        }
+        else if (hist >= total_fix * 0.7 && hist < total_fix * 0.8)
+        {
+            cout << "danger" << endl;
+        }
+
+        hist = 0;
         waitKey(30);
     }
 }
