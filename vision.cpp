@@ -6,7 +6,7 @@
 using namespace cv;
 using namespace std;
 
-#define VIDEO
+#define CAM
 
 
 #ifdef CAM
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
         {
             for (int x = 0; x < current_frame.cols; x++)
             {
-                if (a.at<Vec3b>(y, x)[2] == 255)
+                if (cvt_frame.at<Vec3b>(y, x)[2] == 255)
                 {
                     hist++;
                 }
@@ -97,20 +97,28 @@ int main(int argc, char* argv[])
     vector<vector<Point> > contours;
 
     Ptr< BackgroundSubtractor> pMog2;
-    pMog2 = createBackgroundSubtractorMOG2();
+    //pMog2 = createBackgroundSubtractorMOG2();
    
     VideoCapture cap("river.mov");
    
     cap >> current_frame;
-    int total_fix = current_frame.rows * current_frame.cols;    
+    int total_fix = current_frame.rows * current_frame.cols;
 
 
     while (1)
     {
         cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
+        cap >> current_frame;
         cvt_frame = current_frame.clone();
         
-        pMog2->apply(current_frame, mog2, 0);     
+        //pMog2->apply(current_frame, mog2, 0);
         morphologyEx(mog2, mog2, MORPH_ERODE, kernel);
 
         imshow("ther", mog2);
@@ -121,7 +129,7 @@ int main(int argc, char* argv[])
         {
             for (int x = 0; x < current_frame.cols; x++)
             {
-                if (current_frame.at<Vec3b>(y, x)[2] == 255)
+                if (cvt_frame.at<Vec3b>(y, x)[2] == 255)
                 {
                     hist++;
                 }
