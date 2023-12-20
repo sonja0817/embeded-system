@@ -1,5 +1,38 @@
-#include <opencv2/opencv.hpp>
 #include <iostream>
+#include <stdio.h>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/video/background_segm.hpp>
+
+
+#ifdef _DEBUG        
+#pragma comment(lib, "opencv_core247d.lib")
+#pragma comment(lib, "opencv_imgproc247d.lib")   //MAT processing
+#pragma comment(lib, "opencv_objdetect247d.lib") //HOGDescriptor
+//#pragma comment(lib, "opencv_gpu247d.lib")
+//#pragma comment(lib, "opencv_features2d247d.lib")
+#pragma comment(lib, "opencv_highgui247d.lib")
+#pragma comment(lib, "opencv_ml247d.lib")
+//#pragma comment(lib, "opencv_stitching247d.lib");
+//#pragma comment(lib, "opencv_nonfree247d.lib");
+#pragma comment(lib, "opencv_video247d.lib")
+#else
+#pragma comment(lib, "opencv_core247.lib")
+#pragma comment(lib, "opencv_imgproc247.lib")
+#pragma comment(lib, "opencv_objdetect247.lib")
+//#pragma comment(lib, "opencv_gpu247.lib")
+//#pragma comment(lib, "opencv_features2d247.lib")
+#pragma comment(lib, "opencv_highgui247.lib")
+#pragma comment(lib, "opencv_ml247.lib")
+//#pragma comment(lib, "opencv_stitching247.lib");
+//#pragma comment(lib, "opencv_nonfree247.lib");
+#pragma comment(lib, "opencv_video247d.lib")
+#endif 
+
+
+
 
 using namespace cv;
 using namespace std;
@@ -18,8 +51,8 @@ int main(int argc, char* argv[])
     Mat frame;
     Mat Mog2;
     Ptr<BackgroundSubtractor> pMog2;
-    pMog2 = createBackgroundSubtractorMOG2();
-
+    //pMog2 = createBackgroundSubtractorMOG2();
+    pMOG2 = new BackgroundSubtractorMOG2();
 
     cap >> a;
 
@@ -35,7 +68,8 @@ int main(int argc, char* argv[])
         getStructuringElement(MORPH_RECT, Size(3, 3));
         morphologyEx(diff1, diff, MORPH_OPEN, k);
 
-        pMog2->apply(b, frame);
+        //pMog2->apply(b, frame);
+        pMOG2->operator()(b, frame);
         morphologyEx(frame, frame, MORPH_ERODE, k);
         cvtColor(frame, frame, COLOR_GRAY2BGR);
         bitwise_or(frame, b, diff);
@@ -60,14 +94,14 @@ int main(int argc, char* argv[])
     Mat kernel;
     Mat Mog2;
     Ptr<BackgroundSubtractor> pMog2;
-    pMog2 = createBackgroundSubtractorMOG2();
-   
+    //pMog2 = createBackgroundSubtractorMOG2();
+    pMog2 = new BackgroundSubtractorMOG2();
 
     //VideoCapture cap("square.mp4");
-    VideoCapture cap(0);
+    VideoCapture cap(2);
  
     Mat a, b, c;
-    vector<vector<Point>> contours;
+    vector<vector<Point> > contours;
 
     cap >> a;
 
@@ -78,10 +112,11 @@ int main(int argc, char* argv[])
     {
         cap >> a;
 
-        pMog2->apply(a, frame);     //MOG2
+        //pMog2->apply(a, frame);     //MOG2
+        pMog2->operator()(a, frame);
         kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
         morphologyEx(frame, frame, MORPH_ERODE, kernel);
-
+        
 
         cvtColor(a, b, COLOR_BGR2GRAY);         //threshold
         threshold(b, c, 150, 255, THRESH_BINARY);
