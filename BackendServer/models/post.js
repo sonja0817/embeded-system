@@ -15,19 +15,33 @@ module.exports = class User extends Sequelize.Model {
       },
       congestion: {
         type: Sequelize.STRING(30),
-        allowNull: false,
+        allowNull: true,
         
       },
       date: {
         type: Sequelize.STRING(10),
-        allowNull: false,
+        allowNull: true;,
        
       },
       image: {
         type: Sequelize.TEXT('medium'),
         allowNull: true,
+      },
+      image1: {
+        type: Sequelize.TEXT('medium'),
+        allowNull: true,
        
-      }
+      },
+       image2: {
+        type: Sequelize.TEXT('medium'),
+        allowNull: true,
+       
+      },
+       image3: {
+        type: Sequelize.TEXT('medium'),
+        allowNull: true,
+       
+      } 
     }, {
       sequelize,
       timestamps: false,
