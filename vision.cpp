@@ -11,12 +11,12 @@ int main(int argc, char* argv[])
     Mat frame;
     Mat kernel;
     Mat Mog2;
-    Ptr<BackgroundSubtractor> pMog2;
 
-    pMog2 = createBackgroundSubtractorMOG2();
-
-    VideoCapture cap("river.mov");
-    //VideoCapture cap(2);
+    //pMog2 = createBackgroundSubtractorMOG2();
+    Ptr< BackgroundSubtractor> pMog2;
+    pMog2 = new BackgroundSubtractorMOG2();
+    //VideoCapture cap("river.mov");
+    VideoCapture cap(2);
  
     Mat a, b, c;
     vector<vector<Point> > contours;
@@ -30,11 +30,9 @@ int main(int argc, char* argv[])
     while (1)
     {
         cap >> a;
-        cap >> a;
-        cap >> a;
-        cap >> a;
         
-        pMog2->apply(a, frame, 0);     //MOG2
+        //pMog2->apply(a, frame, 0);     //MOG2
+        pMog2->operator()(a, frame, 0);
         kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
         morphologyEx(frame, frame, MORPH_ERODE, kernel);
 
