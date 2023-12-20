@@ -8,37 +8,37 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    Mat frame;
+    Mat current_frame, cvt_frame;
     Mat kernel;
-    Mat Mog2;
+    Mat mog2;
+    Mat a, b, c;
+    int level;
+    int hist = 0;
+    vector<vector<Point> > contours;
 
     //pMog2 = createBackgroundSubtractorMOG2();
     Ptr< BackgroundSubtractor> pMog2;
     pMog2 = new BackgroundSubtractorMOG2();
     //VideoCapture cap("river.mov");
     VideoCapture cap(2);
- 
-    Mat a, b, c;
-    vector<vector<Point> > contours;
 
-    cap >> a;
 
-    int hist = 0;
-    int total_fix = a.rows * a.cols;
-    int level;
+    cap >> current_frame;
+    int total_fix = current_frame.rows * current_frame.cols;
+
 
     while (1)
     {
-        cap >> a;
+        cap >> current_frame;
         
         //pMog2->apply(a, frame, 0);     //MOG2
-        pMog2->operator()(a, frame, 0);
+        pMog2->operator()(current_frame, mog2, 0);
         kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
-        morphologyEx(frame, frame, MORPH_ERODE, kernel);
+        morphologyEx(mog2, mog2, MORPH_ERODE, kernel);
 
-        imshow("ther", frame);
+        imshow("ther", mog2);
         findContours(frame, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
-        drawContours(a, contours, -1, Scalar(0, 0, 255), -1);
+        drawContours(cvt_frame, contours, -1, Scalar(0, 0, 255), -1);
 
         /*for (int i = 0; i < contours.size(); i++)
         {
