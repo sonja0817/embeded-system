@@ -107,7 +107,6 @@ int main(int argc, char * argv[])
     Mat a_g, b_g, c_g;
     Mat diff, diff1, diff2;
     int hist = 0;
-    int total_fix = a.rows * a.cols;
     int level;
     
     //VideoCapture cap("square.mp4");
@@ -116,6 +115,8 @@ int main(int argc, char * argv[])
     vector<vector<Point> > contours;
 
     cap >> a;
+    int total_fix = a.rows * a.cols;
+
     cap >> b;
     
     
@@ -185,8 +186,10 @@ int main(int argc, char * argv[])
         }
 
         hist = 0;
+
         a = b.clone();
         b = c.clone();
+
         waitKey(30);
     }
 }
