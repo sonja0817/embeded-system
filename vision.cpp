@@ -13,12 +13,13 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    Mat current_frame, cvt_frame;
+    Mat current_frame, cvt_frame, mog2;
     Mat kernel;
-    Mat mog2;
-    Mat a, b, c;
+    kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+
     int level;
     int hist = 0;
+
     vector<vector<Point> > contours;
 
     //pMog2 = createBackgroundSubtractorMOG2();
@@ -27,10 +28,8 @@ int main(int argc, char* argv[])
     //VideoCapture cap("river.mov");
     VideoCapture cap(2);
 
-
     cap >> current_frame;
     int total_fix = current_frame.rows * current_frame.cols;
-
 
     while (1)
     {
@@ -38,19 +37,11 @@ int main(int argc, char* argv[])
         cvt_frame = current_frame.clone();
         //pMog2->apply(a, frame, 0);     //MOG2
         pMog2->operator()(current_frame, mog2, 0);
-        kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
-        morphologyEx(mog2, mog2, MORPH_ERODE, kernel);
+        morphologyEx(mog2, mog2, MORPH_OPEN, kernel);
 
         imshow("ther", mog2);
-        findContours(frame, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
+        findContours(mog2, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
         drawContours(cvt_frame, contours, -1, Scalar(0, 0, 255), -1);
-
-        /*for (int i = 0; i < contours.size(); i++)
-        {
-            Rect rect = boundingRect(contours[i]);
-            rectangle(a, rect, Scalar(0, 0, 255), -1);
-        }*/
-
 
         for (int y = 0; y < a.rows; y++)
         {
@@ -95,21 +86,22 @@ int main(int argc, char* argv[])
 #ifdef VIDEO
 int main(int argc, char* argv[])
 {
-    Mat current_frame, cvt_frame;
+    Mat current_frame, cvt_frame, mog2;
     Mat kernel;
-    Mat mog2;
-    Mat a, b, c;
+    kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+
     int level;
     int hist = 0;
+
     vector<vector<Point> > contours;
+
     Ptr< BackgroundSubtractor> pMog2;
     pMog2 = createBackgroundSubtractorMOG2();
-    
-    VideoCapture cap("river.mov");
-
-
+   
+    VIDEO cap("river.mov");
+   
     cap >> current_frame;
-    int total_fix = current_frame.rows * current_frame.cols;
+    int total_fix = current_frame.rows * current_frame.cols;    
 
 
     while (1)
@@ -117,20 +109,12 @@ int main(int argc, char* argv[])
         cap >> current_frame;
         cvt_frame = current_frame.clone();
         
-        pMog2->apply(current_frame, mog2, 0);     //MOG2
-        kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+        pMog2->apply(current_frame, mog2, 0);     
         morphologyEx(mog2, mog2, MORPH_ERODE, kernel);
 
         imshow("ther", mog2);
         findContours(mog2, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
         drawContours(cvt_frame, contours, -1, Scalar(0, 0, 255), -1);
-
-        /*for (int i = 0; i < contours.size(); i++)
-        {
-            Rect rect = boundingRect(contours[i]);
-            rectangle(a, rect, Scalar(0, 0, 255), -1);
-        }*/
-
 
         for (int y = 0; y < a.rows; y++)
         {
