@@ -43,9 +43,9 @@ int main(int argc, char* argv[])
         findContours(mog2, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
         drawContours(cvt_frame, contours, -1, Scalar(0, 0, 255), -1);
 
-        for (int y = 0; y < a.rows; y++)
+        for (int y = 0; y < current_frame.rows; y++)
         {
-            for (int x = 0; x < a.cols; x++)
+            for (int x = 0; x < current_frame.cols; x++)
             {
                 if (a.at<Vec3b>(y, x)[2] == 255)
                 {
@@ -53,6 +53,7 @@ int main(int argc, char* argv[])
                 }
             }
         }
+        
         
         imshow("test", cvt_frame);
 
@@ -98,7 +99,7 @@ int main(int argc, char* argv[])
     Ptr< BackgroundSubtractor> pMog2;
     pMog2 = createBackgroundSubtractorMOG2();
    
-    VIDEO cap("river.mov");
+    VideoCapture cap("river.mov");
    
     cap >> current_frame;
     int total_fix = current_frame.rows * current_frame.cols;    
@@ -116,11 +117,11 @@ int main(int argc, char* argv[])
         findContours(mog2, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
         drawContours(cvt_frame, contours, -1, Scalar(0, 0, 255), -1);
 
-        for (int y = 0; y < a.rows; y++)
+        for (int y = 0; y < current_frame.rows; y++)
         {
-            for (int x = 0; x < a.cols; x++)
+            for (int x = 0; x < current_frame.cols; x++)
             {
-                if (a.at<Vec3b>(y, x)[2] == 255)
+                if (current_frame.at<Vec3b>(y, x)[2] == 255)
                 {
                     hist++;
                 }
