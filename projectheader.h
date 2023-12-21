@@ -3,5 +3,6 @@
 
 int buzzer_density(int level);
 int lcdtext_density(int level);
+int clock_1(void);
 
-#ifndef
+#endif
