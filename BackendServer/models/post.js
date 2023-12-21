@@ -19,7 +19,7 @@ module.exports = class User extends Sequelize.Model {
         
       },
       date: {
-        type: Sequelize.STRING(10),
+        type: Sequelize.STRING(20),
         allowNull: true;,
        
       },
